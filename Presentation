@@ -1,0 +1,306 @@
+---
+title: "“Causal Inference in the Social Sciences” by Guido W.Imbens"
+subtitle: Lila Pickerign
+format:
+  revealjs:
+    slide-number: true
+    preview-links: true
+    smaller: true
+    theme: default
+---
+
+## About the Author: Guido W Imbens, 
+
+- He is a professor at Stanford teaching Economics 
+- He received his PhD in Economics through Brown University in 1991
+- He is a Nobel Prize winner and has numerous publications 
+
+
+# Introduction
+## Introduction 
+
+ - This paper reviewed the various ways to approach casual Inference 
+ - Over the last, 40 years, there has been an increase in research into causal inference 
+ - Casual effects multiple different fields, and its important that statisticians know how to account for them within their models 
+
+## Format 
+
+- There are four main strategies address in this review
+  1. Randomized Controlled Trials 
+  2. Observational Studies Under Unconfoundedness
+  3. Strategies when Unconfoundedness is not assumed in an Observational Study 
+  4. Methods for Combining observational and experimental data 
+
+
+## Basic set up and questions
+
+ - Guido utilizes the frame work designed by Splawa-Newyman and Rubin
+
+The outcome  for  the  controlled  variable: 
+$$ Y_i(C)$$
+
+
+The outcome  for  the  treated  variable: 
+$$Y_i(T) $$
+Average effect of the treatment:
+$$
+ (1/N)\Sigma_{i=1}^N(Y_i(T)-Y_i(C))
+$$
+
+# Random Controlled Trials 
+
+## Overview
+
+- The original designs from Neyman and Fisher are still widely used today.  
+- Random Controlled Trials are currently used for regulatory testing of different medications
+- These designs are becoming more and more popular with Social Science 
+
+## Simple Randomized Controlled Trials 
+
+- Both of the following formals do not rule out the Spillover effect. Spillover effect is when a treatment goes to one individual, and it influences the outcome of another individual who did not recieve the treatment, Think about getting the flu shot
+
+Fisher focused on testing a hypothesis: 
+$$
+H0 : Y_i(C) = Y_i(0 ) ∀i,    vs.   Ha : ∃ i s.t. Yi(C) ̸= Yi(T )
+$$
+
+ Neyman focused on the estimation of mean effect: 
+$$
+\hat{\tau} = Y_T - Y_C    
+$$
+where
+$$
+Y_w = \frac{1}{N_w} \sum_{i: W_i = w} Y_i, \quad w \in \{C, T\}
+$$
+$$
+V = \frac{1}{(N - 1)N_C} \sum_{i=1}^{N} (Y_i(C) - \bar{Y}(C))^2 + \frac{1}{(N - 1)N_T} \sum_{i=1}^{N} (Y_i(T)
+$$
+$$
+- \bar{Y}(T))^2- \frac{1}{(N - 1)N} \sum_{i=1}^{N} \left( Y_i(T) - Y_i(C) - (\bar{Y}(T) - \bar{Y}(C)) \right)^2
+$$
+
+- The type of design you choose will depend if you want to get the effects of each treatment or if you just want to know if their different
+
+
+## Adaptive Experiments
+
+- Two Types:
+  
+  1. Thompson Sampling:  Takes a unit, and its chance of being assigned to a given treatment is the probability that the given treatment is the best treatment. In this case the Posterior distribution follows a Beta Distribution. While we are unable to give the probability of all the arms, this sampling efficiently finds the best arm more efficiently 
+  
+  2.Upper Confidence Bounds Approach: The treatments with the highest UCB value is where the next unit goes. As the number of treatment assignments increases, so does the level of the Confidence Interval.  
+
+UCB = Empirical Success rate + 1.96(SE)  
+
+- Potential Drawbacks
+  1. Standard error potentially introducing Bias
+  2. Expected outcomes have the potential to change
+  3. Complications within the covariates 
+
+## Experiments in the Prescence of Spillovers
+
+- Different settings: 
+  - Does not effect population, but those in their same subset
+  - Does not effect population, but those who have connections to each other
+  - Looking at two different populations and their interactions
+  
+- Potential solutions: Exposure Mapping (Aronow & Sammi) and Bipartite Graphs 
+  1. Exposure Mapping: allows researchers to measure all factors that go into the treatment and have potential interactions. 
+  2. Bipartite Graphs: it starts with a a set of treatment units and their set indicators. It also measurews the set of outcomes with responses. 
+
+# Observational Studies with Unconfoundedness
+
+## Overview
+
+- There are three advantages to an observational study vs a random experiment 
+  - More in depth information
+  - Greater sample sizes 
+  - More representative 
+- Key aspect in having a successful study is “homogeneous sub populations”. A researcher wants the sample in subsets based on certain characteristics. It is also assumed the treatment is unconfounded.  
+- Key assumptions: 
+$$
+W_i \perp\!\!\!\perp (Y_i(0), Y_i(1)) \, | \, X_i
+$$
+
+$$
+e(x) \equiv \text{pr}(W_i = T | X_i = x) \in (c, 1 - c), \quad \text{for some } c > 0
+$$
+
+## Estimating Average Treatment Effects Under unconfoundedness
+
+- If drawn from a large population we can use the following formula for treatment effects 
+$$
+\tau_{\text{pop}} = E[Y_i(T) - Y_i(C)]
+$$
+- If the sample size is small then take sample and divde by covariate values next estimate mean effects and find the average over sub samples. 
+- Caution against having to many pre-treatment variables. This might help the uconfoundedness assumption, but this would challenge the overlap assumption 
+
+
+## Applicable Estimators: Matching Estimators 
+
+- This estimate allows researchers to pair a treated individual with a control individual who are similar in characteristics. 
+  - Benefits: Easy to compare 
+  - Downsides: Not the most efficient, to be more accurate there a bigger sample size is necessary and finding adequate pairings can prove to be challenging. 
+
+## Applicable Estimators: Regression Estimators 
+
+First a researcher would find the conditional expectation and averaging changes over the sample.This estimator has the ability to be used in both linear regression models and more flexible models 
+$$
+\hat{\tau}_{reg} = \frac{1}{N} \sum_{i=1}^{N} \left( \hat{\mu}(T, X_i) - \hat{\mu}(C, X_i) \right)
+$$
+
+## Applicable Estimators: Propensity Estimators 
+
+- Propensity Score Estimators: When the desired outcome is to estiamate the population average treatment effect, researchers are able to use the findings of Rosenbaum and Rubin (1983b). 
+It is known that the following equation is true: 
+$$
+W_i \perp\!\!\!\perp (Y_i(0), Y_i(1)) \mid e(X_i)
+$$
+ - Rather than taking all factors into account researchers can focus on the propensity score. 
+ - Methods that can be incorporated include the matching estimators or the regression estimators previously mentioned. There is also another direct method refered to as the balancing score.The balance score uses the following formats: 
+$$
+E\left[\frac{1_{W_i=T} Y_i}{e(X_i)}\right] = E[Y_i(T)]
+$$
+
+$$
+E\left[\frac{1_{W_i=C} Y_i}{1 - e(X_i)}\right] = E[Y_i(C)]
+$$
+
+$$
+\hat{\tau} = 
+\frac{\sum_{i=1}^{N} Y_i 1_{W_i=T} e(X_i)}{\sum_{i=1}^{N} 1_{W_i=T} e(X_i)} - 
+
+\frac{\sum_{i=1}^{N} Y_i 1_{W_i=C} (1 - e(X_i))}{\sum_{i=1}^{N} 1_{W_i=C} (1 - e(X_i))}
+$$
+
+## Applicable Estimators: Doubly Robust Estimators
+
+- This is the current recommendation for the most efficient estimator. This method pulls from both estimates of conditional expectations and estimates of propensity score. This model is not as restrictive in terms of their assumptions in comparison to the others. They have a "double robustness property" (135). This means that the estimate of mean treatment effect is the same regardless of the order of propensity score or conditional outcome expectations.This model also requires lower rates of convergence 
+  - First was introduced by Robins and other authors in 1991, here they emphasized the eobustness
+  - Formulas 
+$$
+\psi(y, w, x) = \mu(T, x) - \mu(C, x) +
+\frac{(y - \mu(w, x)) \cdot 1_{w=T}}{e(x)} -
+\frac{(y - \mu(w, x)) \cdot 1_{w=C}}{1 - e(x)} 
+$$
+
+$$
+= \frac{y \cdot 1_{w=T}}{e(x)} -
+\frac{y \cdot 1_{w=C}}{1 - e(x)} +
+e(x) - 1_{w=T} \cdot e(x)(1 - e(x)) (\mu(T, x)(1 - e(x)) + \mu(C, x)e(x)),
+$$
+
+
+## Continued 
+so that we have the following influence function:
+
+$$
+\psi(y, w, x) - \tau
+$$ 
+
+Then, we have
+
+$$
+\hat{\tau}_{dr} = \frac{1}{N} \sum_{i=1}^{N} \hat{\psi}(Y_i, W_i, X_i).
+$$
+
+  
+## Overlap 
+
+- When finding estimators its important to look for possible violations of the overlap assumption. 
+- Example: LaLonde)1986) had a control and treatment group that were apart in covariate distribution. To combat the potential violation, researchers could review the weighted average instead of the average affect of the population
+- A potential solution is to remove units with a propensity score that is considered close to zero or close to one. With this the minimzised asymptotic variance determines the threshold. Crump et al (2009) 
+- Formula with the suggested change
+$$
+\tau = E\left[\tau(X_i) \mid \alpha < e(X_i) < 1 - \alpha\right]
+$$
+- Li et al. (2018) found this equation can be modified by adding the variables before treatment.
+$$
+\tau = E\left[\frac{e(X_i)(1 - e(X_i))}{E[e(X_i)(1 - e(X_i))]} \tau(X)\right]
+$$
+
+## Estimating Heterogenous Treatment Effects and Policy rules
+
+- There has been an increased focus on using the Conditional Average Treatment Effect
+or the "CATE" method which is the mean effect from conditional on covariates 
+$$
+\tau(x) = E[Y_i(T) - Y_i(C) \mid X_i = x]
+$$
+- Researchers used to try and find the mean effect by series methods (Crump, 2008). These methods were not effective with the number of covariates given. Now often times machine learning is used to distinguish effects 
+- Newer methods include utilizing regression trees as a way to estimate (Athey and Imbens 2016). These methods could potentially be utilized for supervised learning. 
+
+## Sensitivity Analyses and Bounds
+
+- There is doubt that the unconfoundedness assumptions holds
+- Reviewing three potential ways to solve this problem
+  1. Removing unconfoundedness all together 
+  2. Unconfoundedness begins, but is more relaxed. There is room for one unobserved factor.The unobserved variable would only result in minimal changes.
+  3. The last one was started by Rosenbaum (2002), the idea was that it would begin with unconfoundedness but not restrict. This solution would only limit the assignment probabilities 
+
+
+# Observational Studies Without Unconfoundedness 
+
+## Overview
+
+- Tinbergen, an early economist, studied cases where it was not accurate to randomly assign treatments within subgroups. Rather than having the chance to assign treatments, they studied interactions and choices by the firms and consumers.  
+
+- There is not currently one straight forward answer as to how to solve for violations of unconfoundedness. There are three strategies though: “instrumental variables, fixed effect and DID methods, and regression discontinuity”(140)  
+
+## Instrumental Variables 
+
+- Researchers are concerned about the effect of confounder on both the treatment and the output.
+- Used to tackle endogeneity 
+- Instrumental variables help to estimate casual relationships 
+
+## Fixed Effect, Difference-in-Differences, and Sythenic Control Methods 
+
+- Difference-in-difference (DID) :
+  - two samples outcomes reviewed 
+$$
+\hat{DID} = (Y_{T,\text{post}} - Y_{C,\text{post}}) - (Y_{T,\text{pre}} - Y_{C,\text{pre}})
+$$
+  - the DID estimator can be influenced by the two way fixed effect.
+
+- Two Way Fixed Effect
+  - This is an additive model and can estimated th weighted average
+
+- Synthetic Control (SC)
+  "Central idea was to approximate the treated unit by a synthetic version consisting of a convex combination of the control limits" (143)
+
+## Regression Discontinuity Designs 
+
+- A strategy for recognizing when Uncofoundedness is not plausible dating back to the 1960s
+- The follow formula will be the average effect given the data is a conditional distribution: 
+$$
+\tau = \lim_{x \to c} E[Y_i(T) - Y_i(C) | X_i = x] = \lim_{x \downarrow c} E[Y_i | X_i = x] - \lim_{x \uparrow c} E[Y_i | X_i = x].
+$$
+- Can use this to estimate the conditional expectation by looking at the two limits together 
+- The most used estimator for treatments is similar to linear regression. A researcher would have to consider the bandwith length which decideds how far from the threshold can data points be.
+- Fuzzy Regression Discontinuity Design which is "The probability of exposure to the treatment does not jump from zero to one at the threshold" (145). In this case there would be a discontinuty, but it would not have significant impact at the threshold.  
+
+# Combining Experimental and Observational Data 
+
+Two ways to incorporate both observational and experimental data:
+
+  1. Surrogacy 
+  2. Using experiments to remove selection bias 
+  
+## Incoperation of observation and experimental data 
+- Current problem: Using short term experiments to predict long last effects (Gupta et al. 2019)
+- While we might be able to get results quickly, the findings may not end up being the most beneficial for a given research project 
+- Solution: Experiment with treatments and short term results then an observational study where we don't review the factor but do review surrogates and primary outcome
+- Important that all variables go through the surrogates
+
+Using Experiments to Remove Selection Bias 
+- In this scenario, there would be an observational study which gives us more data and insight. More data for the experiment and allows for researcher to plan and work to remove bias. 
+
+
+## Final Thoughts 
+
+There is going to continue to be more and more papers about Casual Inference from all different disciplines .Research is always changing and there wil continue to be more developments 
+
+# Thank you!
+
+## Resource 
+Imbens, G. W. (2024). Causal inference in the social sciences. Annual Review of
+Statistics and Its Application, 11: 123-152.
